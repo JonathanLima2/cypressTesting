@@ -1,14 +1,17 @@
+import { inventory } from "./inventory.PO";
+
 describe('[T18] Access shopping cart',()=>{
+    const inventoryPO = new inventory();
     beforeEach(()=>{
         cy.fixture('login').then((alias)=>{
             cy.login(alias.name.standardUser,alias.passwords.standard);
         });
     });
     it('Validate if the user can see the shopping cart list',()=>{
-        cy.url().should('contain','inventory');
-        cy.get('.inventory_list').should('be.visible');
-        cy.get('#shopping_cart_container').should('be.visible').click();
-        cy.url().should('contain','cart');
-        cy.get('#cart_contents_container').should('be.visible');
+        inventoryPO.getInventoryURLCheck('inventory');
+        inventoryPO.getInventoryList().should('be.visible');        
+        inventoryPO.getInventoryShoppingCartIcon().should('be.visible').click();
+        inventoryPO.getInventoryURLCheck('cart');
+        inventoryPO.getInventoryItemOnCartList().should('be.visible');
     });
 });

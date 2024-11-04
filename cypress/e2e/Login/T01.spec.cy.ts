@@ -1,4 +1,7 @@
+import { login } from "./login.PO";
+
 describe('[T01] Login',()=>{
+    const loginPO = new login();
     beforeEach(()=>{
         cy.fixture('login').then((alias)=>{
             cy.login(alias.name.standardUser,alias.passwords.standard);
@@ -6,6 +9,6 @@ describe('[T01] Login',()=>{
     });
     it('Validate if the user can enter the platform',()=>{
         cy.url().should('contain','inventory');
-        cy.get('.inventory_list').should('be.visible');
+        loginPO.getLoginProductsList().should('be.visible');
     });
 });

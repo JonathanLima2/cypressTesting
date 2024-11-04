@@ -1,21 +1,23 @@
+import { inventory } from "./inventory.PO";
+
 describe('[T07] Add products to the cart',()=>{
+    const inventoryPO = new inventory();
     let noItems:number = 0;
     beforeEach(()=>{
         cy.fixture('login').then((alias)=>{
             cy.login(alias.name.standardUser,alias.passwords.standard);
         });
     });
-    it('Validate if the user is able to add multiple products to the shopping cart',()=>{
-        
-        cy.url().should('contain','inventory');
-        cy.get('.inventory_list').should('be.visible');
-        cy.get('.btn_primary').first().should('be.visible');
-        cy.get('.btn_primary').each((addCart)=>{
+    it('Validate if the user is able to add multiple products to the shopping cart',()=>{       
+        inventoryPO.getInventoryURLCheck('inventory');
+        inventoryPO.getInventoryList().should('be.visible');
+        inventoryPO.getInventoryAddFirstProduct().should('be.visible');
+        inventoryPO.getInventoryAddProductButton().each((addCart)=>{
             cy.wrap(addCart).scrollIntoView().click();
             noItems=noItems+1;
         }).then(()=>{
-            cy.get('.shopping_cart_badge').should('be.visible').scrollIntoView();
-            cy.get('.shopping_cart_badge').should('contain.text',noItems.toString());    
+            inventoryPO.getInventoryShoppingCartBadge().should('be.visible').scrollIntoView();
+            inventoryPO.getInventoryShoppingCartBadge().should('contain.text',noItems.toString());    
         });
     });
 });
